@@ -1,0 +1,181 @@
+
+<div style="
+    background:#171717;
+    border-radius:18px;
+    padding:16px;
+    max-width:420px;
+    font-family:Arial, sans-serif;
+    color:#ffffff;
+    box-sizing:border-box;
+">
+
+    <div style="
+        display:flex;
+        align-items:center;
+        gap:12px;
+        width:100%;
+    ">
+
+        <!-- PDF FILE ICON -->
+        <div style="
+            flex-shrink:0;
+            width:26px;
+            height:32px;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+        ">
+            <svg
+                width="24"
+                height="28"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#ffffff"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+            >
+                <path d="M6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z"/>
+                <path d="M14 2v6h6"/>
+                <text
+                    x="6"
+                    y="17"
+                    fill="#ffffff"
+                    stroke="none"
+                    font-size="6"
+                    font-weight="bold"
+                >PDF</text>
+            </svg>
+        </div>
+
+        <!-- FILE INFORMATION -->
+        <div style="
+            flex:1;
+            min-width:0;
+        ">
+
+            <div
+                title="{{ file_name | e }}"
+                style="
+                    font-size:13px;
+                    font-weight:400;
+                    line-height:1.5;
+                    white-space:nowrap;
+                    overflow:hidden;
+                    text-overflow:ellipsis;
+                    color:#ffffff;
+                "
+            >
+                {{ file_name | e }}
+            </div>
+
+            <div style="
+                font-size:12px;
+                color:#999999;
+                margin-top:5px;
+            ">
+                PDF | Sales Offer
+            </div>
+
+        </div>
+
+        <!-- DOWNLOAD BUTTON -->
+        {% if download_url %}
+
+        <!-- ACTIVE DOWNLOAD BUTTON -->
+        <a
+            href="{{ download_url | e }}"
+            download="{{ file_name | e }}"
+            target="_self"
+            rel="noopener noreferrer"
+            aria-label="Download sales offer PDF"
+            title="Download sales offer"
+            style="
+                width:44px;
+                height:44px;
+                flex-shrink:0;
+                background:#e4ad32;
+                color:#111111;
+                border-radius:50%;
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                text-decoration:none;
+                cursor:pointer;
+            "
+        >
+            <svg
+                width="22"
+                height="22"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+            >
+                <path d="M12 3v12"/>
+                <path d="m7 10 5 5 5-5"/>
+                <path d="M5 17v3h14v-3"/>
+            </svg>
+        </a>
+
+        {% else %}
+
+        <!-- DISABLED DOWNLOAD BUTTON -->
+        <div
+            title="Download currently unavailable"
+            aria-label="Download currently unavailable"
+            role="img"
+            style="
+                width:44px;
+                height:44px;
+                flex-shrink:0;
+                background:#555555;
+                color:#aaaaaa;
+                border-radius:50%;
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                cursor:not-allowed;
+                opacity:0.7;
+            "
+        >
+            <svg
+                width="22"
+                height="22"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+            >
+                <path d="M12 3v12"/>
+                <path d="m7 10 5 5 5-5"/>
+                <path d="M5 17v3h14v-3"/>
+            </svg>
+        </div>
+
+        {% endif %}
+
+    </div>
+
+    <!-- STATUS WHEN DOWNLOAD URL IS UNAVAILABLE -->
+    {% if not download_url %}
+
+    <div style="
+        font-size:11px;
+        color:#aaaaaa;
+        margin-top:10px;
+        padding-left:38px;
+    ">
+        Download currently unavailable
+    </div>
+
+    {% endif %}
+
+</div>

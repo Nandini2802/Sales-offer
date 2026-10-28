@@ -1,0 +1,63 @@
+1. ChatSession — sessions table
+Stores the details of each chatbot conversation.
+
+| Column      | Description                                                                            |
+|-------------|----------------------------------------------------------------------------------------|
+| id          | Unique identifier for each chat session, generated automatically using UUID.           |
+| user_id     | Identifies the Salesforce user who owns the session.                                   |
+| user_role   | Stores the user's role, such as Broker or Direct Sales, for role-based access context. |
+| title       | Optional title of the conversation, used to identify it in chat history.               |
+| created_at  | Date and time when the session was created.                                            |
+| updated_at  | Date and time when the session was last updated.                                       |
+| messages    | Relationship linking the session to all its chat messages.                             |
+| query_logs  | Relationship linking the session to its query execution logs.                          |
+| last_activity_at  | when was the last time conversation updated                                      |
+| status      | conversation can stay active or closed                                                 |
+
+
+2. ChatMessage — messages table
+Stores the conversation messages exchanged between the user and chatbot for each session.
+
+| Column     | Description                                                             |
+|------------|-------------------------------------------------------------------------|
+| id         | Unique identifier for each message, generated automatically using UUID. |
+| session_id | Identifies the chat session to which the message belongs.               |
+| role       | Indicates whether the message was sent by the user or assistant.        |
+| content    | Stores the actual text of the user's question or chatbot's response.    |
+| created_at | Date and time when the message was created.                             |
+| session    | Relationship linking the message back to its parent chat session.       |
+
+
+3. QueryLog — query_log table
+Stores query-processing details for monitoring, debugging, and tracking chatbot performance.
+
+| Column      | Description                                                                     |
+|-------------|---------------------------------------------------------------------------------|
+| id          | Unique identifier for each query log entry, generated automatically using UUID. |
+| session_id  | Identifies the chat session associated with the query.                          |
+| user_id     | Identifies the user who submitted the query.                                    |
+| query_text  | Stores the original question submitted by the user.                             |
+| intent      | Stores the identified query intent, such as inventory or marketing materials.   |
+| status      | Tracks the query processing status, such as pending, success, or failed.        |
+| latency_ms  | Stores the time taken to process the query, in milliseconds.                    |
+| created_at  | Date and time when the query log entry was created.                             |
+| session     | Relationship linking the query log back to its parent chat session.             |
+
+
+4. Other important SQLAlchemy configurations
+
+| Configuration                 | Description                                                             |
+|-------------------------------|-------------------------------------------------------------------------|
+| primary_key=True              | Marks the column as the table's primary key.                            |
+| nullable=False                | Makes the column mandatory; it cannot store NULL.                       |
+| nullable=True                 | Allows the column to store NULL.                                        |
+| index=True                    | Creates a database index to improve search performance.                 |
+| ForeignKey                    | Establishes a reference between two tables.                             |
+| ondelete="CASCADE"            | Automatically deletes related child records when the parent is deleted. |
+| relationship()                | Defines how SQLAlchemy models are connected.                            |
+| back_populates                | Connects both sides of a SQLAlchemy relationship.                       |
+| cascade="all, delete-orphan"  | Propagates ORM operations and deletes child records removed from their parent. |
+| server_default=func.now()     | Lets db automatically assign the current time when inserting a record.  |
+| onupdate=func.now()           | Updates the timestamp when SQLAlchemy issues an update to that record.  |
+| CheckConstraint               | Restricts a column to specific valid values.                            |
+| Index                         | Creates a database index on one or more columns for faster lookups.     |

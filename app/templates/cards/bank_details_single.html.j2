@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background: transparent;
+    -webkit-font-smoothing: antialiased;
+  }
+  .bank-detail {
+    background: #16171a;
+    border-radius: 16px;
+    padding: 22px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .bank-field__label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff;
+  }
+  .bank-field__value {
+    font-size: 13px;
+    color: #8b8d92;
+    margin-top: 6px;
+    word-break: break-word;
+  }
+
+  /* Share / Copy actions */
+  .bank-actions { display: flex; gap: 12px; margin-top: 14px; }
+  .bank-btn {
+    flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px;
+    height: 44px; border: 0; border-radius: 40px;
+    background: #26272b; color: #fff;
+    font-size: 14px; font-weight: 500; font-family: inherit;
+    cursor: pointer; transition: filter .18s;
+  }
+  .bank-btn:hover { filter: brightness(1.15); }
+  .bank-btn svg { width: 18px; height: 18px; }
+</style>
+</head>
+<body>
+<div class="bank-detail">
+
+  <div class="bank-field">
+    <div class="bank-field__label">Project Name</div>
+    <div class="bank-field__value">{{ account.projectName | default(project, true) | e }}</div>
+  </div>
+
+  <div class="bank-field">
+    <div class="bank-field__label">Bank Name</div>
+    <div class="bank-field__value">{{ account.bankName | default("Not available", true) | e }}</div>
+  </div>
+
+  <div class="bank-field">
+    <div class="bank-field__label">Account No.</div>
+    <div class="bank-field__value">{{ account.accountNumber | default("Not available", true) | e }}</div>
+  </div>
+
+  <div class="bank-field">
+    <div class="bank-field__label">IBAN Number</div>
+    <div class="bank-field__value">{{ account.ibanNumber | default("Not available", true) | e }}</div>
+  </div>
+
+  <div class="bank-field">
+    <div class="bank-field__label">Account Name</div>
+    <div class="bank-field__value">{{ account.beneficiaryName | default("Not available", true) | e }}</div>
+  </div>
+
+  <div class="bank-field">
+    <div class="bank-field__label">Swift Code</div>
+    <div class="bank-field__value">{{ account.swiftCode | default("Not available", true) | e }}</div>
+  </div>
+
+  <div class="bank-field">
+    <div class="bank-field__label">Branch Name</div>
+    <div class="bank-field__value">{{ account.branch | default("Not available", true) | e }}</div>
+  </div>
+
+</div>
+
+<div class="bank-actions">
+  <button type="button" class="bank-btn" onclick="bankShare()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.6" y1="13.5" x2="15.4" y2="17.5"/><line x1="15.4" y1="6.5" x2="8.6" y2="10.5"/></svg>
+    Share
+  </button>
+  <button type="button" class="bank-btn" onclick="bankCopy(this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h8"/></svg>
+    Copy
+  </button>
+</div>
+
+<script>
+  // Build "Label: Value" text from the detail panel.
+  function bankText() {
+    return [].map.call(document.querySelectorAll('.bank-field'), function (f) {
+      return f.querySelector('.bank-field__label').textContent + ': ' + f.querySelector('.bank-field__value').textContent;
+    }).join('\n');
+  }
+  function bankFlash(btn, msg) {
+    if (!btn.getAttribute('data-label')) btn.setAttribute('data-label', btn.textContent.trim());
+    btn.lastChild.textContent = msg;
+    setTimeout(function () { btn.lastChild.textContent = btn.getAttribute('data-label'); }, 1500);
+  }
+  // Copy → clipboard (async API, fallback to execCommand for older WebViews).
+  function bankCopy(btn) {
+    var text = bankText();
+    var done = function () { bankFlash(btn, 'Copied'); };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done, function () { legacyCopy(text); done(); });
+    } else { legacyCopy(text); done(); }
+  }
+  function legacyCopy(text) {
+    var ta = document.createElement('textarea');
+    ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); } catch (e) {}
+    document.body.removeChild(ta);
+  }
+  // Share → native share sheet; fallback to host postMessage so the app can share natively.
+  function bankShare() {
+    var text = bankText();
+    if (navigator.share) {
+      navigator.share({ text: text }).catch(function () {});
+    } else {
+      try { window.parent.postMessage({ source: 'danube-ai', type: 'action', action: 'share', payload: { text: text } }, '*'); } catch (e) {}
+    }
+  }
+</script>
+</body>
+</html>

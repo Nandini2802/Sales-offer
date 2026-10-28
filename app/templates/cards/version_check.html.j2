@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #fff; }
+  .card {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.06), 0 8px 32px rgba(0,0,0,.06);
+    width: 100%;
+    max-width: 460px;
+    overflow: hidden;
+  }
+  .card-top {
+    background: linear-gradient(135deg, #16213e 0%, #1a2f5e 100%);
+    padding: 24px 28px 20px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #c9a96e;
+    margin-bottom: 6px;
+  }
+  .title { font-size: 20px; font-weight: 700; color: #fff; }
+  .status-badge {
+    font-size: 12px;
+    font-weight: 700;
+    padding: 6px 14px;
+    border-radius: 20px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .status-badge--current { background: #d1fae5; color: #065f46; }
+  .status-badge--outdated { background: #fee2e2; color: #991b1b; }
+  .card-body { padding: 24px 28px; }
+  .meta-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  .meta-item .meta-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #9a9590;
+    margin-bottom: 3px;
+  }
+  .meta-item .meta-value {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1a1a1a;
+  }
+  .divider { border: none; border-top: 1px solid #f0ede8; margin: 0 0 20px; }
+  .history-toggle {
+    background: none;
+    border: 1.5px solid #d0ccc6;
+    width: 100%;
+    text-align: left;
+    padding: 12px 16px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #16213e;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: background .15s;
+  }
+  .history-toggle:hover { background: #f5f5f0; }
+  .history-toggle .chevron { transition: transform .2s; font-style: normal; }
+  details[open] .chevron { transform: rotate(180deg); }
+  .version-list {
+    list-style: none;
+    margin-top: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .version-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px;
+    background: #faf9f7;
+    border-radius: 8px;
+    border: 1px solid #eeebe5;
+  }
+  .version-item--current { border-color: #c9a96e; background: #fffbf3; }
+  .version-label-text { font-size: 13px; font-weight: 600; color: #1a1a1a; }
+  .version-meta { font-size: 11px; color: #9a9590; }
+  .current-tag {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .5px;
+    color: #c9a96e;
+    background: rgba(201,169,110,.12);
+    padding: 2px 8px;
+    border-radius: 10px;
+  }
+  .footer {
+    padding: 12px 28px;
+    background: #faf9f7;
+    border-top: 1px solid #f0ede8;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .footer-dot { width: 6px; height: 6px; border-radius: 50%; background: #c9a96e; }
+  .footer-text { font-size: 11px; color: #9a9590; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="card-top">
+    <div>
+      <div class="label">Version Status</div>
+      <div class="title">{{ project }}</div>
+    </div>
+    <span class="status-badge status-badge--{{ 'current' if is_latest else 'outdated' }}">
+      {{ 'Up to date' if is_latest else 'Outdated' }}
+    </span>
+  </div>
+
+  <div class="card-body">
+    <div class="meta-grid">
+      <div class="meta-item">
+        <div class="meta-label">Asset Type</div>
+        <div class="meta-value">{{ asset_type | replace('_', ' ') | title }}</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Language</div>
+        <div class="meta-value">{{ language | upper }}</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Current Version</div>
+        <div class="meta-value">{{ current_version }}</div>
+      </div>
+    </div>
+
+    {% if all_versions | length > 1 %}
+    <hr class="divider" />
+    <details>
+      <summary style="list-style:none">
+        <button class="history-toggle">
+          Version history <span>({{ all_versions | length }})</span>
+          <i class="chevron">&#8964;</i>
+        </button>
+      </summary>
+      <ul class="version-list">
+        {% for v in all_versions %}
+        <li class="version-item {% if v.is_current %}version-item--current{% endif %}">
+          <div>
+            <div class="version-label-text">{{ v.version_label }}</div>
+            {% if v.released_at %}<div class="version-meta">{{ v.released_at[:10] }}</div>{% endif %}
+          </div>
+          {% if v.is_current %}<span class="current-tag">CURRENT</span>{% endif %}
+        </li>
+        {% endfor %}
+      </ul>
+    </details>
+    {% endif %}
+  </div>
+
+  <div class="footer">
+    <div class="footer-dot"></div>
+    <span class="footer-text">Danube Properties &mdash; Asset Version Tracker</span>
+  </div>
+</div>
+
+</body>
+</html>

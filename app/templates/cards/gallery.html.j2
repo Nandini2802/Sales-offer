@@ -1,0 +1,84 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background: transparent;
+    -webkit-font-smoothing: antialiased;
+  }
+  .file-stack { display: flex; flex-direction: column; gap: 10px; }
+  .file-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+    background: #16171a;
+    border-radius: 16px;
+    padding: 14px 16px;
+  }
+  .file-icon {
+    flex-shrink: 0;
+    color: #fff;
+    display: flex;
+  }
+  .file-info { flex: 1; min-width: 0; }
+  .file-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: #fff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .file-meta {
+    font-size: 12.5px;
+    color: #8b8d92;
+    margin-top: 3px;
+  }
+  .download-btn {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #e0aa4a 0%, #c9963a 100%);
+    color: #16171a;
+    text-decoration: none;
+    transition: transform .12s, filter .18s;
+    border: 0;
+    cursor: pointer;
+  }
+  .download-btn:hover { filter: brightness(1.06); transform: translateY(-1px); }
+  .download-btn:active { transform: translateY(0); }
+  .download-btn svg { width: 20px; height: 20px; }
+</style>
+</head>
+<body>
+<div class="file-stack">
+  <div class="file-card">
+    <span class="file-icon">
+      <svg width="24" height="22" viewBox="0 0 16 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M10.2197 8.87988C10.551 8.87991 10.8192 9.14824 10.8193 9.47949V10.4434C11.6747 10.7014 12.2977 11.4951 12.2979 12.4346C12.2978 13.5833 11.3665 14.5145 10.2178 14.5146C9.06888 14.5146 8.13775 13.5834 8.1377 12.4346C8.13787 11.4936 8.76272 10.6991 9.62012 10.4424V9.47949C9.62024 9.14823 9.88843 8.87988 10.2197 8.87988ZM4.98828 0C5.33253 5.67199e-05 5.67154 0.0857527 5.97461 0.249023C6.27558 0.411246 6.53266 0.644866 6.72168 0.929688L7.32129 1.81836L7.3252 1.82422C7.4061 1.94701 7.51674 2.04803 7.64648 2.11719C7.77622 2.18624 7.92141 2.22109 8.06836 2.21973H13.9209C14.4725 2.21973 15.0025 2.43909 15.3926 2.8291C15.7826 3.21919 16.0009 3.74915 16.001 4.30078V11.6982C16.0037 12.0859 15.8984 12.467 15.6963 12.7979C15.4942 13.1285 15.2035 13.3959 14.8574 13.5703C14.5615 13.7194 14.2009 13.6006 14.0518 13.3047C13.9028 13.0088 14.0216 12.6481 14.3174 12.499C14.4638 12.4252 14.5863 12.3118 14.6719 12.1719C14.7573 12.032 14.8028 11.8709 14.8018 11.707V4.30078C14.8017 4.06737 14.7089 3.84277 14.5439 3.67773C14.3789 3.51277 14.1542 3.41992 13.9209 3.41992H8.07422V3.41895C7.72848 3.42128 7.38725 3.33834 7.08203 3.17578C6.7752 3.01226 6.51348 2.77476 6.32227 2.48438V2.4834L5.72656 1.60156L5.72363 1.5957C5.64349 1.47409 5.53346 1.37378 5.40527 1.30469C5.30917 1.25299 5.20435 1.21944 5.09668 1.20605L4.98828 1.19922H2.08008C1.84674 1.19926 1.62206 1.292 1.45703 1.45703C1.29202 1.62207 1.19928 1.84665 1.19922 2.08008V11.7021C1.19922 11.9355 1.29214 12.1601 1.45703 12.3252C1.62206 12.4902 1.84673 12.583 2.08008 12.583H5.85449C6.18561 12.5831 6.45387 12.8515 6.4541 13.1826C6.4541 13.5139 6.18575 13.7831 5.85449 13.7832H2.08008C1.52842 13.7832 0.998462 13.5639 0.608398 13.1738C0.218449 12.7837 0 12.2538 0 11.7021V2.08008C6.55727e-05 1.52865 0.218626 0.999427 0.608398 0.609375C0.998459 0.219285 1.52843 4.49862e-05 2.08008 0H4.98828ZM10.2197 11.5596C10.2062 11.5596 10.193 11.5565 10.1797 11.5557C9.71142 11.5756 9.33712 11.9612 9.33691 12.4346C9.33696 12.9208 9.73177 13.3145 10.2178 13.3145C10.7036 13.3143 11.0976 12.9207 11.0977 12.4346C11.0975 11.9617 10.7245 11.5763 10.2568 11.5557C10.2445 11.5564 10.2323 11.5596 10.2197 11.5596ZM10.2197 5.17383C10.5511 5.17386 10.8193 5.44208 10.8193 5.77344V6.51465C10.8192 6.84587 10.551 7.11423 10.2197 7.11426C9.88845 7.11426 9.62027 6.84589 9.62012 6.51465V5.77344C9.62012 5.44207 9.88836 5.17383 10.2197 5.17383Z" fill="currentColor"/>
+      </svg>
+    </span>
+    <div class="file-info">
+      <div class="file-name">{{ project }} {{ folder_label }}</div>
+      <div class="file-meta">{{ total_images }} images</div>
+    </div>
+    {% if zip_url %}
+    <a class="download-btn" href="{{ zip_url }}" target="_blank" rel="noopener noreferrer" download title="Download">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 3v12"/><polyline points="7 10 12 15 17 10"/><path d="M5 21h14"/>
+      </svg>
+    </a>
+    {% endif %}
+  </div>
+</div>
+</body>
+</html>

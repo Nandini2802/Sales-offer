@@ -1,0 +1,25 @@
+<div class="file-stack">
+  <div class="file-card">
+    <div class="file-info">
+      <div class="file-name">
+        {{ project }} — {{ label }}
+      </div>
+      <div class="file-meta">
+        {% if total_files %}
+          {{ total_files }} files
+        {% else %}
+          Download ZIP
+        {% endif %}
+      </div>
+    </div>
+
+    {% if zip_url %}
+      <a class="download-btn"
+         href="{{ zip_url }}"
+         rel="noopener noreferrer"
+         title="Download ZIP">
+        Download
+      </a>
+    {% endif %}
+  </div>
+</div>

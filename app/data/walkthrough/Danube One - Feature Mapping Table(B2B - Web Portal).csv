@@ -1,0 +1,96 @@
+Features,,Dev Key,"Individual Agents
+- Freelancer",Agency Login,,MD/CM,Direct & Indirect,In Direct Team,,,,Direct Team,,,BD Team,,,,Referral Sales Team,,"Individual Agents
+- Referral (External)","Individual Agents
+- Referral`s Associate (External)"
+,,,,"Owner (Admin) 
+Login",Agent Login,L6,"L5 - CSO 
+(Reports to L6)","L4 - General Manager 
+(Reports to L5)",L3 - Head,"L2 - Regional 
+Sales manager",L1 - Sales Manager,"L3 - Head 
+(Reports to L5)","L2 - Regional 
+Sales manager",L1 - Sales Manager,"B4 - Director
+(Reports to L6)",B3 - GM,B2 - Sr Manager,"B1 - Executive / Assistant Manager
+","R3 - GM
+(Reports to L6 - Chairman)
+(Internal)","R1 - BD Manager
+(Internal)",,
+,,,,,,MD/CEO/Chairman,Mohamed Ali,"Sunil Nair, 
+Ahmed Hussein, 
+Gaurav Bhatia,
+Mohamed Ibrahim",,,,Najmeh Jafari,,,SANA SAJAN,VARUN KHANNA,AMIT MISHRA/,,Mohammed Ghouse,,,
+Login,Login ,,No,No,No,No,No,No,No,No,No,No,No,No,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes
+,Forgot Password,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes
+Registration ,Full Agency Registration ,,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No
+Home Page ,,HomePage,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,No,No,No,No
+Inventory,Unit Tab ,UnitTab,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,No,No,No,No
+,Project Detail Page ,PDPage,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,No,No,No,No
+,"Project Detail Page 
+Download Availability",DownloadAvailability,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,No,No,No,No,No,No,No,No
+,Unit Detail Page ,UDPage,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,No,No,No,No
+,Sales offer Download,SalesOfferEnable,No,No,No,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,No,No,No,No,No,No,No,No
+,Compare Unit ,CompareUnit,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,No,No,No,No
+Booking,Lead (Add &Listing) ,LeadTab/LeadAdd,Yes,Yes,Yes,No,No,No,No,No,No,No,No,No,No,No,No,No,Yes - without create,Yes - without create,Yes,Yes
+,Opportunity ,Opportunity ,Yes,Yes,Yes,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No
+,Sales Order ,SalesOrder,Yes,Yes,Yes,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No
+Commission ,,Commission,No,Yes,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No
+Announcements ,,Announcement,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,No,No,No,No
+User Management,Add Agent ,AddAgent/AddReferral,No,Yes,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,Yes - Add Referral,No
+,Generate Referral Code,GenerateReferralCode,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,Yes,Yes,No
+Profile,My Profile ,MyProfile,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes
+,Change Password,ChangePassword,Yes,Yes,Yes,No,No,No,No,No,No,No,No,No,No,No,No,No,Yes,Yes,Yes,Yes
+,Logout,Logout,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes
+,Company Profile ,AgencyProfile,No,Yes,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No
+Marketing Material ,,MarketingList,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,No,No,No,No
+Clubs (Director/Chairman) ,,,Yes,Yes,Yes,No,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,No,No,No,No,No,No,No,No
+Help & Support ,Privacy policy ,PrivacyPolicy,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes
+,Terms & Conditions ,TermsConditions,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes
+,About Danube ,AboutUS,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes
+,Contact us,ContactUS,"Yes -
+Without form","Yes -
+Without form","Yes -
+Without form","Yes -
+Without form","Yes -
+Without form","Yes -
+Without form","Yes -
+Without form","Yes -
+Without form","Yes -
+Without form","Yes -
+Without form","Yes -
+Without form","Yes -
+Without form","Yes -
+Without form","Yes -
+Without form","Yes -
+Without form","Yes -
+Without form","Yes -
+Without form","Yes -
+Without form","Yes -
+Without form","Yes -
+Without form"
+Support Ticket (Report Issue) ,,"SupportTicket,",Yes,Yes,Yes,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No
+,,CreateSupportTicket,,Yes,Yes,,,,,,,,,,No,No,No,No,,,,
+Daily Activity Report,,[],No,No,No,"Yes - 
+View Only","Yes - 
+View Only","Yes - 
+View Only","Yes - 
+View Only","Yes - 
+View Only",Yes,No,No,No,"Yes - 
+View Only","Yes - 
+View Only","Yes - 
+View Only",Yes,No,No,No,No
+,,DAR Dashboard,No,No,No,Yes,Yes,Yes,Yes,Yes,Yes,No,No,No,Yes,Yes,Yes,Yes,No,No,No,No
+"New Project
+Booking",EOI (Expression Of Interest),EoiView/EOICreate,No,No,No,"Yes - 
+View Only","Yes - 
+View Only","Yes - 
+View Only","Yes - 
+View Only","Yes - 
+View Only",Yes - Only for Sunil & Arun & Atif Malik team (International),"Yes - 
+View Only","Yes - 
+View Only",Yes,No,No,No,No,No,No,No,No
+,Launch Event Booking,LaunchBooking,No,No,No,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,No,No,No,No,No,No,No,No
+Promoters,Lead,PromoterLeadCreate/PromoterLeadView,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No
+,Activity History,,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No
+,WhatsApp,,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No
+,Leads LeaderBoard,,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No
+Analytics,Sales Analytics Dasboard,,No,No,No,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,No,No,No,No,No,No,No,No
+,DAR Analytics Dasboard,,No,No,No,No,Yes,Yes,Yes,Yes,Yes,No,No,No,Yes,Yes,Yes,Yes,No,No,No,No

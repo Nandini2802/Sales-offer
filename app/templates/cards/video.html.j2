@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background: transparent;
+    -webkit-font-smoothing: antialiased;
+  }
+  .file-stack { display: flex; flex-direction: column; gap: 10px; }
+  .file-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+    background: #16171a;
+    border-radius: 16px;
+    padding: 14px 16px;
+  }
+  .file-icon {
+    flex-shrink: 0;
+    color: #fff;
+    display: flex;
+  }
+  .file-info { flex: 1; min-width: 0; }
+  .file-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: #fff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .file-meta {
+    font-size: 12.5px;
+    color: #8b8d92;
+    margin-top: 3px;
+  }
+  .download-btn {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #e0aa4a 0%, #c9963a 100%);
+    color: #16171a;
+    text-decoration: none;
+    transition: transform .12s, filter .18s;
+    border: 0;
+    cursor: pointer;
+  }
+  .download-btn:hover { filter: brightness(1.06); transform: translateY(-1px); }
+  .download-btn:active { transform: translateY(0); }
+  .download-btn svg { width: 20px; height: 20px; }
+  .download-all-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 48px;
+    margin-top: 8px;
+    padding: 12px 18px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #e0aa4a 0%, #c9963a 100%);
+    color: #16171a;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: .4px;
+    text-decoration: none;
+    cursor: pointer;
+  }
+</style>
+</head>
+<body>
+<div class="file-stack">
+
+  {% if files %}
+
+    {% for file in files %}
+    <div class="file-card">
+
+      <span class="file-icon">
+        <!-- Keep your existing video SVG here -->
+      </span>
+
+      <div class="file-info">
+
+        <div class="file-name">
+          {{ file.name }}
+        </div>
+
+        <div class="file-meta">
+          {% if file.file_size_bytes %}
+            {{ (file.file_size_bytes / 1048576) | round(1) }} MB
+          {% endif %}
+        </div>
+
+      </div>
+
+      <a
+        class="download-btn"
+        href="{{ file.download_url }}"
+        target="_blank"
+        rel="noopener noreferrer"
+        title="Download">
+
+        <svg viewBox="0 0 24 24"
+             fill="none"
+             stroke="currentColor"
+             stroke-width="2.2"
+             stroke-linecap="round"
+             stroke-linejoin="round">
+          <path d="M12 3v12"/>
+          <polyline points="7 10 12 15 17 10"/>
+          <path d="M5 21h14"/>
+        </svg>
+
+      </a>
+
+    </div>
+    {% endfor %}
+
+
+    {% if zip_url %}
+    <a
+      class="download-all-btn"
+      href="{{ zip_url }}"
+      target="_blank"
+      rel="noopener noreferrer">
+
+      DOWNLOAD ALL VIDEOS
+
+    </a>
+    {% endif %}
+
+
+  {% else %}
+
+    {# Existing language-specific single video #}
+
+    <div class="file-card">
+
+      <div class="file-info">
+        <div class="file-name">
+          {{ project }} Video
+        </div>
+      </div>
+
+      {% if stream_url %}
+      <a
+        class="download-btn"
+        href="{{ stream_url }}"
+        target="_blank"
+        rel="noopener noreferrer"
+        title="Download">
+
+        <svg viewBox="0 0 24 24"
+             fill="none"
+             stroke="currentColor"
+             stroke-width="2.2">
+          <path d="M12 3v12"/>
+          <polyline points="7 10 12 15 17 10"/>
+          <path d="M5 21h14"/>
+        </svg>
+
+      </a>
+      {% endif %}
+
+    </div>
+
+  {% endif %}
+
+</div>
+</body>
+</html>

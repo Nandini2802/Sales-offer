@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background: transparent; -webkit-font-smoothing: antialiased; }
+  .so-stack { display: flex; flex-direction: column; gap: 14px; }
+  .so-card { display: flex; align-items: center; gap: 14px; width: 100%; background: #16171a; border: 1px solid transparent; border-radius: 16px; padding: 16px; cursor: pointer; transition: background .15s, border-color .15s; }
+  .so-card__input { position: absolute; opacity: 0; width: 0; height: 0; }
+  .so-card__box { flex-shrink: 0; width: 24px; height: 24px; border-radius: 7px; border: 1.5px solid #4a4b50; background: transparent; display: flex; align-items: center; justify-content: center; transition: background .15s, border-color .15s; }
+  .so-card__box svg { width: 14px; height: 14px; opacity: 0; transition: opacity .15s; }
+  .so-card__label { flex: 1; min-width: 0; font-size: 15px; font-weight: 500; line-height: 1.35; color: #fff; }
+  .so-card__input:checked ~ .so-card__box { background: linear-gradient(135deg, #e0aa4a 0%, #c9963a 100%); border-color: transparent; color: #16171a; }
+  .so-card__input:checked ~ .so-card__box svg { opacity: 1; }
+  .so-card:has(.so-card__input:checked) { background: #221d12; border-color: rgba(201, 150, 58, .35); }
+  .so-submit-wrap { display: flex; justify-content: left;}
+  .so-submit { border: 0; border-radius: 20px; padding: 11px 26px; font-size: 14px; font-weight: 600; font-family: inherit; color: #16171a; background: linear-gradient(135deg, #e0aa4a 0%, #c9963a 100%); cursor: pointer; transition: filter .18s, transform .12s; }
+  .so-submit:hover { filter: brightness(1.06); transform: translateY(-1px); }
+  .so-submit:active { transform: translateY(0); }
+</style></head><body><div class="so-stack">
+{% for plan in plans %}
+<label class="so-card">
+  <input type="checkbox" class="so-card__input" name="sales_offer" value="{{ plan.payPlanName | e }}">
+  <span class="so-card__box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12 10 17 19 7"/></svg></span>
+  <span class="so-card__label">{{ plan.payPlanName }}</span>
+</label>
+{% endfor %}
+<div class="so-submit-wrap"><button type="button" class="so-submit">Submit Selected</button></div>
+</div></body></html>

@@ -1,0 +1,225 @@
+
+<div style="
+    width:100%;
+    max-width:430px;
+    box-sizing:border-box;
+    background:#000000;
+    color:#ffffff;
+    padding:16px 12px;
+    font-family:Arial,sans-serif;
+    font-size:14px;
+    font-weight:400;
+    line-height:1.75;
+">
+
+    <!-- PROJECT INTRODUCTION -->
+    <div style="margin-bottom:16px;">
+
+        {% if introduction %}
+            {{ introduction | e }}
+        {% else %}
+            <strong>{{ project_name | e }}</strong>
+            is a Danube Properties development
+            {% if location %}
+                located in {{ location | e }}.
+            {% else %}
+                .
+            {% endif %}
+
+            {% if bedrooms %}
+                It offers {{ bedrooms | e }}
+                bedroom options.
+            {% endif %}
+        {% endif %}
+
+    </div>
+
+    <!-- KEY HIGHLIGHTS -->
+    <div style="
+        margin-bottom:14px;
+        font-weight:500;
+    ">
+        Key highlights:
+    </div>
+
+    <div style="
+        display:flex;
+        flex-direction:column;
+        gap:8px;
+    ">
+
+        {% if highlights is defined and highlights %}
+            {% for item in highlights %}
+                <div style="
+                    display:flex;
+                    align-items:flex-start;
+                    gap:8px;
+                ">
+                    <span style="flex-shrink:0;">
+                        {{ item.icon | e }}
+                    </span>
+                    <span>
+                        {{ item.text | e }}
+                    </span>
+                </div>
+            {% endfor %}
+
+        {% else %}
+
+            {% if location %}
+            <div>
+                📍 Location: {{ location | e }}
+            </div>
+            {% endif %}
+
+            {% if project_configuration %}
+            <div>
+                🏢 {{ project_configuration | e }}
+            </div>
+            {% endif %}
+
+            {% if bedrooms %}
+            <div>
+                🏠 Bedrooms: {{ bedrooms | e }}
+            </div>
+            {% endif %}
+
+            {% if total_units is defined and total_units is not none %}
+            <div>
+                🏘️ {{ total_units }} residential units
+            </div>
+            {% endif %}
+
+            {% if amenities %}
+            <div>
+                🌴 Amenities: {{ amenities | e }}
+            </div>
+            {% endif %}
+
+            {% if starting_price %}
+            <div>
+                💰 Starting price: AED {{ starting_price | e }}
+            </div>
+            {% endif %}
+
+            {% if payment_plan %}
+            <div>
+                💳 Payment plan: {{ payment_plan | e }}
+            </div>
+            {% endif %}
+
+            {% if construction_status %}
+            <div>
+                🏗️ Construction status:
+                {{ construction_status | e }}
+            </div>
+            {% endif %}
+
+            {% if completion_date %}
+            <div>
+                📅 Expected completion:
+                {{ completion_date | e }}
+            </div>
+            {% endif %}
+
+            {% if handover_date %}
+            <div>
+                🗓️ Handover:
+                {{ handover_date | e }}
+            </div>
+            {% endif %}
+
+        {% endif %}
+
+    </div>
+
+    <!-- PROJECT DESCRIPTION -->
+    {% if description %}
+    <div style="
+        margin-top:22px;
+        margin-bottom:20px;
+        line-height:1.8;
+    ">
+        {{ description | e }}
+    </div>
+    {% endif %}
+
+    <!-- ACTION BUTTONS -->
+    <div style="
+        display:flex;
+        align-items:center;
+        flex-wrap:wrap;
+        gap:12px;
+        margin-top:24px;
+    ">
+
+        <!-- VIEW PROJECT DETAILS -->
+        {% if details_url is defined and details_url %}
+        <a
+            href="{{ details_url | e }}"
+            target="_blank"
+            rel="noopener noreferrer"
+            style="
+                display:inline-flex;
+                align-items:center;
+                justify-content:center;
+                background:#DCA51C;
+                color:#000000;
+                border-radius:30px;
+                padding:12px 18px;
+                font-size:13px;
+                font-weight:500;
+                text-decoration:none;
+                white-space:nowrap;
+            "
+        >
+            View Project Details
+        </a>
+        {% else %}
+        <button
+            type="button"
+            disabled
+            style="
+                background:#DCA51C;
+                color:#000000;
+                border:0;
+                border-radius:30px;
+                padding:12px 18px;
+                font-size:13px;
+                font-weight:500;
+                opacity:0.8;
+                cursor:default;
+                white-space:nowrap;
+            "
+        >
+            View Project Details
+        </button>
+        {% endif %}
+
+        <!-- VIEW AVAILABLE UNITS -->
+        <button
+            type="button"
+            data-action="view-available-units"
+            data-project-id="{{ project_id | default('', true) | e }}"
+            data-project-name="{{ project_name | e }}"
+            style="
+                display:inline-flex;
+                align-items:center;
+                justify-content:center;
+                background:#181818;
+                color:#ffffff;
+                border:0;
+                border-radius:30px;
+                padding:12px 18px;
+                font-size:13px;
+                font-weight:500;
+                white-space:nowrap;
+                cursor:default;
+            "
+        >
+            View Available Units
+        </button>
+
+    </div>
+
+</div>

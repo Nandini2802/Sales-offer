@@ -1,0 +1,65 @@
+<div style="
+    width:100%;
+    max-width:520px;
+    box-sizing:border-box;
+    background:#080808;
+    color:#ffffff;
+    border-radius:14px;
+    padding:16px;
+    font-family:Arial,sans-serif;
+">
+
+    <div style="
+        font-size:16px;
+        font-weight:600;
+        margin-bottom:12px;
+    ">
+        {{ project_name | e }}
+    </div>
+
+    <div style="
+        background:#151515;
+        border-radius:10px;
+        padding:24px 16px;
+        text-align:center;
+    ">
+
+        <div style="
+            font-size:15px;
+            font-weight:600;
+            margin-bottom:10px;
+        ">
+            Explore the 3D Virtual Tour
+        </div>
+
+        <div style="
+            font-size:12px;
+            color:#aaaaaa;
+            margin-bottom:20px;
+            line-height:1.6;
+        ">
+            Explore the project through an
+            interactive virtual walkthrough.
+        </div>
+
+        <a
+            href="{{ video_url | e }}"
+            target="_blank"
+            rel="noopener noreferrer"
+            style="
+                display:inline-block;
+                background:#38bdf8;
+                color:#000000;
+                padding:11px 20px;
+                border-radius:8px;
+                font-size:13px;
+                font-weight:600;
+                text-decoration:none;
+            "
+        >
+            Open 3D Virtual Tour
+        </a>
+
+    </div>
+
+</div>

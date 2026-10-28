@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Poppins:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:transparent;color:#fff;font-family:'Poppins',Arial,sans-serif;-webkit-font-smoothing:antialiased}
+.pc{max-width:850px;margin:0 auto;padding:16px 12px 30px}
+.pc-title{font-family:Montserrat,sans-serif;font-size:20px;letter-spacing:2px;font-weight:700;margin:0 0 24px;text-transform:uppercase}
+.pc-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.pc-col{min-width:0}
+.pc-card{text-align:center;min-width:0}
+.pc-image-box{width:100%;aspect-ratio:375/439;background:#16171a;border-radius:10px;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.pc-image{width:100%;height:100%;object-fit:cover;display:block}
+.pc-placeholder{color:#999;font-size:12px;padding:10px}
+.pc-name{font-family:Montserrat,sans-serif;font-size:13px;font-weight:700;line-height:1.4;text-transform:uppercase;margin:14px 0 6px;overflow-wrap:anywhere}
+.pc-location{font-size:11px;color:#aaa;line-height:1.5;margin:0 0 12px;overflow-wrap:anywhere}
+.pc-price,.pc-money{display:inline-flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap}
+.pc-price{font-family:Montserrat,sans-serif;font-size:14px;font-weight:700}
+.pc-aed-icon{width:17px;height:17px;object-fit:contain;flex-shrink:0}
+.pc-section{border-top:3px solid #202020;padding-top:26px;margin-top:26px}
+.pc-section>summary{display:flex;align-items:center;justify-content:space-between;cursor:pointer;list-style:none;font-family:Montserrat,sans-serif;font-size:17px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:24px}
+.pc-section>summary::-webkit-details-marker{display:none}
+.pc-section>summary::after{content:'⌃';font-size:22px;font-weight:400}
+.pc-section:not([open])>summary{margin-bottom:0}
+.pc-section:not([open])>summary::after{content:'⌄'}
+.pc-field{display:flex;flex-direction:column;gap:6px;margin-bottom:24px;min-width:0}
+.pc-label{font-size:12px;color:#aaa}
+.pc-value{font-family:Montserrat,sans-serif;font-size:13px;font-weight:600;line-height:1.5;overflow-wrap:anywhere}
+@media(max-width:480px){.pc{padding:12px 8px 24px}.pc-grid{gap:12px}.pc-title{font-size:17px}.pc-name{font-size:12px}.pc-section>summary{font-size:15px}.pc-value{font-size:12px}.pc-aed-icon{width:15px;height:15px}}
+</style>
+</head>
+<body>
+{% macro value(v) -%}
+    {%- if v is not none and v != '' -%}{{ v | e }}{%- else -%}--{%- endif -%}
+{%- endmacro %}
+{% macro money(v) -%}
+    {%- if v is not none and v != '' -%}
+        <span class="pc-money"><img class="pc-aed-icon" src="https://aibot.danubeone.app/staging/assets/images/price-icon.svg" alt="AED"><span>{{ v | e }}</span></span>
+    {%- else -%}--{%- endif -%}
+{%- endmacro %}
+{% macro field(label, v, is_money=false) -%}
+    <div class="pc-field"><div class="pc-label">{{ label }}</div><div class="pc-value">{% if is_money %}{{ money(v) }}{% else %}{{ value(v) }}{% endif %}</div></div>
+{%- endmacro %}
+<div class="pc">
+    <h2 class="pc-title">COMPARE PROJECTS</h2>
+    <div class="pc-grid">
+        {% for item in comparisons %}
+        {% set p = item.project %}
+        <div class="pc-col pc-card">
+            <div class="pc-image-box">
+                {% if p.project_image is string and p.project_image.startswith('https://') %}
+                <img class="pc-image" src="{{ p.project_image | e }}" alt="{{ p.project_name | default('Project', true) | e }}" loading="lazy">
+                {% else %}<span class="pc-placeholder">Project image unavailable</span>{% endif %}
+            </div>
+            <div class="pc-name">{{ value(p.project_name) }}</div>
+            <div class="pc-location">{{ value(p.location) }}</div>
+            <div class="pc-price">{{ money(p.starting_price) }}</div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <details class="pc-section" open>
+        <summary>OVERVIEW</summary>
+        <div class="pc-grid">
+            {% for item in comparisons %}
+            {% set p = item.project %}
+            <div class="pc-col">
+                {{ field('Starting Price', p.starting_price, true) }}
+                {{ field('Anticipated Completion', p.completion_date) }}
+                {{ field('Location', p.location) }}
+                {{ field('Bedrooms', p.bedrooms_categories) }}
+                {{ field('Project Number', p.project_number) }}
+                {{ field('Project Configuration', p.project_configuration) }}
+            </div>
+            {% endfor %}
+        </div>
+    </details>
+
+    <details class="pc-section" open>
+        <summary>UNIT DETAILS</summary>
+        <div class="pc-grid">
+            {% for item in comparisons %}
+            {% set p = item.project %}
+            <div class="pc-col">
+                {{ field('Total Units', p.total_units) }}
+                {{ field('Available Units', p.total_available_units) }}
+                {{ field('Total Buildings', p.total_buildings) }}
+                {{ field('Total Floors', p.total_floors) }}
+            </div>
+            {% endfor %}
+        </div>
+    </details>
+
+    <details class="pc-section" open>
+        <summary>CONSTRUCTION STATUS</summary>
+        <div class="pc-grid">
+            {% for item in comparisons %}
+            {% set p = item.project %}
+            <div class="pc-col">
+                {{ field('Construction Status', p.construction_status) }}
+                {{ field('Construction Completion %', none) }}
+                {{ field('Handover Date', p.handover_date) }}
+                {{ field('Completion Date', p.completion_date) }}
+            </div>
+            {% endfor %}
+        </div>
+    </details>
+
+    <details class="pc-section" open>
+        <summary>PAYMENT INFORMATION</summary>
+        <div class="pc-grid">
+            {% for item in comparisons %}
+            {% set p = item.project %}
+            <div class="pc-col">
+                {{ field('Starting Price', p.starting_price, true) }}
+                {{ field('Payment Plan', p.payment_plan) }}
+            </div>
+            {% endfor %}
+        </div>
+    </details>
+</div>
+</body>
+</html>

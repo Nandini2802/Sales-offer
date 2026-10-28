@@ -1,0 +1,341 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap"
+        rel="stylesheet"
+    />
+
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont,
+                'Segoe UI', Roboto, Arial, sans-serif;
+            background: #000;
+            -webkit-font-smoothing: antialiased;
+            color: #fff;
+        }
+
+        .pay-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            height: 56px;
+            padding: 18px 16px;
+            background: rgba(0, 0, 0, .6);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            position: sticky;
+            top: 0;
+            z-index: 2;
+        }
+
+        .pay-header__title {
+            flex: 1 0 0;
+            min-width: 0;
+            text-align: center;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 17px;
+            line-height: 1.2;
+            letter-spacing: 1.7px;
+            text-transform: uppercase;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* UNIT LISTING */
+
+        .unit-table {
+            display: flex;
+            flex-direction: column;
+            background: #111;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .unit-table__head {
+            display: flex;
+            gap: 5px;
+            padding: 10px;
+            color: #000;
+            line-height: 1.5;
+            background: linear-gradient(
+                100.45deg,
+                #b87c01 0%,
+                #d7ac50 21.26%,
+                #dc9b15 100%
+            );
+        }
+
+        .unit-table__head .col-title {
+            font-weight: 500;
+            font-size: 12px;
+        }
+
+        .unit-table__head .col-sub {
+            font-weight: 400;
+            font-size: 10px;
+        }
+
+        /* Column widths match the existing design */
+
+        .col-property {
+            flex: 1 0 0;
+            min-width: 1px;
+        }
+
+        .col-area {
+            width: 50px;
+            flex-shrink: 0;
+        }
+
+        .col-type {
+            width: 70px;
+            flex-shrink: 0;
+        }
+
+        .col-price {
+            width: 70px;
+            flex-shrink: 0;
+        }
+
+        .unit-table__body {
+            display: flex;
+            flex-direction: column;
+            padding: 0 10px;
+        }
+
+        .unit-row {
+            display: flex;
+            gap: 5px;
+            padding: 16px 0;
+            border-bottom: 1px solid #000;
+            color: #fff;
+            font-weight: 400;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .unit-row:last-child {
+            border-bottom: none;
+        }
+
+        .unit-row .col-property {
+            overflow-wrap: anywhere;
+        }
+
+        .unit-row .col-area,
+        .unit-row .col-type,
+        .unit-row .col-price {
+            overflow-wrap: anywhere;
+        }
+
+        /* Result count */
+
+        .unit-count {
+            padding: 10px 16px;
+            background: #111;
+            color: #d7ac50;
+            font-size: 11px;
+            font-weight: 500;
+            border-bottom: 1px solid #222;
+        }
+
+        /* Empty state */
+
+        .unit-empty {
+            padding: 24px 16px;
+            text-align: center;
+            color: #aaa;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        /* UNIT LISTING */
+
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+
+    <div class="pay-header">
+        <p class="pay-header__title">
+            UNIT LISTING
+        </p>
+    </div>
+
+    <!-- UNIT COUNT -->
+
+    {% if units %}
+
+    <div class="unit-count">
+        Showing {{ units | length }} of
+        {{ total_matches | default(units | length, true) }}
+        matching units
+    </div>
+
+    {% endif %}
+
+    <!-- UNITS LISTING -->
+
+    <div class="unit-table">
+
+        <!-- TABLE HEADER -->
+
+        <div class="unit-table__head">
+
+            <p class="col-property col-title">
+                Property
+            </p>
+
+            <div class="col-area">
+                <p class="col-title">
+                    Area
+                </p>
+                <p class="col-sub">
+                    (sqft)
+                </p>
+            </div>
+
+            <p class="col-type col-title">
+                Unit Type
+            </p>
+
+            <div class="col-price">
+                <p class="col-title">
+                    Price
+                </p>
+                <p class="col-sub">
+                    (AED)
+                </p>
+            </div>
+
+        </div>
+
+        <!-- DYNAMIC UNIT ROWS -->
+
+        <div class="unit-table__body" id="unitRows">
+
+            {% if units %}
+
+                {% for unit in units %}
+
+                <div class="unit-row">
+
+                    <!-- UNIT NUMBER / PROPERTY -->
+
+                    <div class="col-property">
+
+                        {{ unit.unit_name or "N/A" }}
+
+                    </div>
+
+                    <!-- AREA -->
+
+                    <div class="col-area">
+
+                        {% if unit.area_sqft is not none
+                              and unit.area_sqft != "" %}
+
+                            {{ unit.area_sqft }}
+
+                        {% else %}
+
+                            N/A
+
+                        {% endif %}
+
+                    </div>
+
+                    <!-- UNIT TYPE / BEDROOMS -->
+
+                    <div class="col-type">
+
+                        {% if unit.bedrooms is not none
+                              and unit.bedrooms != "" %}
+
+                            {% if unit.bedrooms | string == "0" %}
+
+                                Studio
+
+                            {% else %}
+
+                                {{ unit.bedrooms }} BR
+
+                            {% endif %}
+
+                        {% elif unit.unit_type %}
+
+                            {{ unit.unit_type }}
+
+                        {% else %}
+
+                            N/A
+
+                        {% endif %}
+
+                    </div>
+
+                    <!-- SELLING PRICE -->
+
+                    <div class="col-price">
+
+                        {% if unit.price is not none
+                              and unit.price != "" %}
+
+                            {% if unit.currency
+                                  and unit.currency != "AED" %}
+
+                                {{ unit.currency }}
+
+                            {% endif %}
+
+                            {{ "{:,.0f}".format(
+                                unit.price | float
+                            ) }}
+
+                        {% else %}
+
+                            N/A
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+                {% endfor %}
+
+            {% else %}
+
+                <!-- NO MATCHING UNITS -->
+
+                <div class="unit-empty">
+
+                    No matching units found.
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+    <!-- UNITS LISTING END -->
+
+</body>
+</html>

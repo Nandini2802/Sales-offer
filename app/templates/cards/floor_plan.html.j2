@@ -1,0 +1,85 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background: transparent;
+    -webkit-font-smoothing: antialiased;
+  }
+  .file-stack { display: flex; flex-direction: column; gap: 10px; }
+  .file-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+    background: #16171a;
+    border-radius: 16px;
+    padding: 14px 16px;
+  }
+  .file-icon {
+    flex-shrink: 0;
+    color: #fff;
+    display: flex;
+  }
+  .file-info { flex: 1; min-width: 0; }
+  .file-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: #fff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .file-meta {
+    font-size: 12.5px;
+    color: #8b8d92;
+    margin-top: 3px;
+  }
+  .download-btn {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #e0aa4a 0%, #c9963a 100%);
+    color: #16171a;
+    text-decoration: none;
+    transition: transform .12s, filter .18s;
+    border: 0;
+    cursor: pointer;
+  }
+  .download-btn:hover { filter: brightness(1.06); transform: translateY(-1px); }
+  .download-btn:active { transform: translateY(0); }
+  .download-btn svg { width: 20px; height: 20px; }
+</style>
+</head>
+<body>
+<div class="file-stack">
+  <div class="file-card">
+    <span class="file-icon">
+      <svg width="20" height="26" viewBox="0 0 12 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M7.5 0L12 4.5V14C12 14.5304 11.7891 15.039 11.4141 15.4141C11.039 15.7891 10.5304 16 10 16H2C1.4696 16 0.961003 15.7891 0.585938 15.4141C0.210867 15.039 2.21006e-06 14.5304 0 14V2C0 1.46957 0.210865 0.96101 0.585938 0.585938C0.961004 0.210905 1.4696 0 2 0H7.5ZM2 1C1.73481 1 1.4805 1.10547 1.29297 1.29297C1.10543 1.4805 1 1.73478 1 2V14C1 14.2652 1.10543 14.5195 1.29297 14.707C1.4805 14.8945 1.73482 15 2 15H10C10.2652 15 10.5195 14.8945 10.707 14.707C10.8945 14.5195 11 14.2652 11 14V4.5H9C8.60221 4.5 8.22075 4.34181 7.93945 4.06055C7.65815 3.77924 7.5 3.39782 7.5 3V1H2Z" fill="currentColor"/>
+      </svg>
+    </span>
+    <div class="file-info">
+      <div class="file-name">{{ project }} Floor Plans</div>
+      <div class="file-meta">{{ total_images }} plans</div>
+    </div>
+    {% if zip_url %}
+    <a class="download-btn" href="{{ zip_url }}" target="_blank" rel="noopener noreferrer" download title="Download">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 3v12"/><polyline points="7 10 12 15 17 10"/><path d="M5 21h14"/>
+      </svg>
+    </a>
+    {% endif %}
+  </div>
+</div>
+</body>
+</html>
+

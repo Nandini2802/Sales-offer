@@ -1,0 +1,378 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1">
+
+<title>Danube AI - Dev Test Harness</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f7f8fa;
+    color: #172033;
+}
+
+header {
+    padding: 18px 24px;
+    background: #17172d;
+    color: white;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+#messages {
+    height: calc(100vh - 230px);
+    overflow-y: auto;
+    padding: 20px;
+}
+
+.message {
+    padding: 12px 16px;
+    border-radius: 12px;
+    margin-bottom: 12px;
+    max-width: 90%;
+    white-space: pre-wrap;
+}
+
+.user {
+    background: #17172d;
+    color: white;
+    margin-left: auto;
+    width: fit-content;
+}
+
+.assistant {
+    background: #e9edf2;
+}
+
+.card-frame {
+    width: 100%;
+    min-height: 180px;
+    border: none;
+    background: white;
+    margin: 10px 0;
+    border-radius: 12px;
+}
+
+#followups {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    padding: 8px 20px;
+}
+
+.chip {
+    border: none;
+    border-radius: 20px;
+    padding: 9px 14px;
+    cursor: pointer;
+    background: #e4eaf5;
+}
+
+.input-area {
+    display: flex;
+    gap: 10px;
+    padding: 16px 20px;
+    background: white;
+}
+
+#question {
+    flex: 1;
+    padding: 14px;
+    border-radius: 8px;
+    border: 1px solid #ccd1d8;
+}
+
+#send {
+    padding: 12px 24px;
+    background: #17172d;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+#status {
+    padding: 5px 20px;
+    font-size: 12px;
+    color: #666;
+}
+
+details {
+    margin: 10px 20px;
+    font-size: 12px;
+}
+
+#events {
+    max-height: 160px;
+    overflow: auto;
+    white-space: pre-wrap;
+}
+</style>
+</head>
+
+<body>
+
+<header>Danube AI — Dev Test Harness</header>
+
+<div id="messages"></div>
+<div id="followups"></div>
+
+<div id="status">Ready</div>
+
+<div class="input-area">
+    <input
+        id="question"
+        placeholder="Ask something... e.g. Greenz brochure"
+    >
+    <button id="send">Send</button>
+</div>
+
+<details>
+    <summary>SSE Event Log</summary>
+    <pre id="events"></pre>
+</details>
+
+<script>
+const messages = document.getElementById("messages");
+const question = document.getElementById("question");
+const sendButton = document.getElementById("send");
+const followups = document.getElementById("followups");
+const statusBox = document.getElementById("status");
+const eventLog = document.getElementById("events");
+let currentSessionId = null;
+
+function addMessage(text, className) {
+    const element = document.createElement("div");
+    element.className = "message " + className;
+    element.textContent = text;
+    messages.appendChild(element);
+    messages.scrollTop = messages.scrollHeight;
+    return element;
+}
+
+function renderHTML(html) {
+    // Keep generated HTML isolated from the test
+    // harness rather than injecting it into the page.
+    const frame = document.createElement("iframe");
+    frame.className = "card-frame";
+    frame.setAttribute(
+        "sandbox",
+        "allow-downloads allow-popups allow-popups-to-escape-sandbox"
+    );
+
+    frame.srcdoc = html;
+    messages.appendChild(frame);
+    messages.scrollTop = messages.scrollHeight;
+}
+
+function renderFollowups(chips) {
+    followups.replaceChildren();
+
+    for (const text of chips || []) {
+        const button = document.createElement("button");
+        button.className = "chip";
+        button.textContent = text;
+
+        button.onclick = () => {
+            question.value = text;
+            sendMessage();
+        };
+
+        followups.appendChild(button);
+    }
+}
+
+
+function processEvent(eventName, data, state) {
+    eventLog.textContent +=
+        eventName + ": " + JSON.stringify(data) + "\n";
+
+    switch (eventName) {
+
+        // NEW: Save the session ID returned by backend.
+        case "session":
+            if (data.session_id) {
+                currentSessionId = data.session_id;
+
+                console.log(
+                    "SESSION SAVED:",
+                    currentSessionId
+                );
+            }
+            break;
+
+        case "token":
+            state.assistant.textContent += data.text || "";
+            break;
+
+        case "html_block":
+            renderHTML(data.html || "");
+            break;
+
+        case "followups":
+            renderFollowups(data.chips);
+            break;
+
+        case "error":
+            addMessage(
+                data.error?.message || "Request failed",
+                "assistant"
+            );
+            break;
+
+        case "done":
+            statusBox.textContent =
+                "Status: " + data.status;
+            break;
+    }
+
+    messages.scrollTop = messages.scrollHeight;
+}
+
+
+async function sendMessage() {
+    const text = question.value.trim();
+    if (!text || sendButton.disabled) return;
+
+    sendButton.disabled = true;
+    question.value = "";
+    followups.replaceChildren();
+    eventLog.textContent = "";
+
+    addMessage(text, "user");
+    const assistant = addMessage("", "assistant");
+
+    statusBox.textContent = "Processing...";
+
+    try {
+        // Each request starts a new session until
+        // backend session resume is implemented.
+        const response = await fetch(
+            "/api/v1/chat/query",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    user_id: "005J9000000HpVQIA0",
+                    message: text,
+                    start_conversation: currentSessionId === null,
+                    session_id: currentSessionId,
+
+                    role: "broker",
+                    source: "mobile_app",
+                    employee_type: "direct"
+                })
+            }
+        );
+
+        if (!response.ok) {
+            const contentType =
+                response.headers.get("content-type") || "";
+
+            if (!contentType.includes("text/event-stream")) {
+                throw new Error(
+                    "HTTP " + response.status +
+                    ": " + await response.text()
+                );
+            }
+        }
+
+        if (!response.body) {
+            throw new Error("No streaming response");
+        }
+
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
+
+        let buffer = "";
+        let completed = false;
+
+        const state = { assistant };
+
+        function parseEvent(block) {
+            let eventName = "message";
+            const dataLines = [];
+
+            for (const line of block.split("\n")) {
+                if (line.startsWith("event:")) {
+                    eventName = line.slice(6).trim();
+                } else if (line.startsWith("data:")) {
+                    dataLines.push(line.slice(5).trimStart());
+                }
+            }
+
+            if (!dataLines.length) return;
+
+            const data = JSON.parse(dataLines.join("\n"));
+            processEvent(eventName, data, state);
+
+            if (eventName === "done") {
+                completed = true;
+            }
+        }
+
+        while (true) {
+            const { value, done } = await reader.read();
+
+            if (done) break;
+
+            buffer += decoder.decode(
+                value,
+                { stream: true }
+            );
+
+            buffer = buffer.replace(/\r\n/g, "\n");
+
+            let boundary;
+
+            while ((boundary = buffer.indexOf("\n\n")) !== -1) {
+                const block = buffer.slice(0, boundary);
+                buffer = buffer.slice(boundary + 2);
+
+                if (block.trim()) {
+                    parseEvent(block);
+                }
+            }
+        }
+
+        buffer += decoder.decode();
+
+        if (buffer.trim()) {
+            parseEvent(buffer);
+        }
+
+        if (!completed) {
+            statusBox.textContent =
+                "Stream ended without done event";
+        }
+
+    } catch (error) {
+        statusBox.textContent = "Error";
+        addMessage(error.message, "assistant");
+    } finally {
+        sendButton.disabled = false;
+    }
+}
+
+sendButton.addEventListener("click", sendMessage);
+
+question.addEventListener("keydown", event => {
+    if (event.key === "Enter") {
+        sendMessage();
+    }
+});
+</script>
+
+</body>
+</html>

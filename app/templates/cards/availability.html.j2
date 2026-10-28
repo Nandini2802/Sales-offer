@@ -1,0 +1,94 @@
+
+<div class="availability-report"
+     style="color:#ffffff;">
+
+  <p style="
+    color:#f4be20;
+    font-size:14px;
+    line-height:1.8;
+    margin:0 0 16px 0;
+  ">
+    {{ disclaimer }}
+  </p>
+
+  <div style="
+    display:flex;
+    align-items:center;
+    gap:12px;
+    background:#151515;
+    border-radius:22px;
+    padding:18px;
+    max-width:460px;
+  ">
+
+    <div style="
+      color:#ffffff;
+      font-size:26px;
+    ">
+      {% if file_type == "pdf" %}
+        📄
+      {% else %}
+        📊
+      {% endif %}
+    </div>
+
+    <div style="
+      flex:1;
+      min-width:0;
+    ">
+
+      <div style="
+        overflow:hidden;
+        text-overflow:ellipsis;
+        white-space:nowrap;
+        font-size:15px;
+      ">
+        {{ file_name }}
+      </div>
+
+      <div style="
+        color:#929292;
+        font-size:13px;
+        margin-top:6px;
+      ">
+        {{ file_type | upper }}
+        · {{ currency }}
+      </div>
+
+    </div>
+
+    <a href="{{ download_url }}"
+       download="{{ file_name }}"
+       aria-label="Download availability report"
+       style="
+         background:#e7b32c;
+         color:#000000;
+         width:56px;
+         height:56px;
+         border-radius:50%;
+         display:flex;
+         align-items:center;
+         justify-content:center;
+         text-decoration:none;
+         flex-shrink:0;
+       ">
+
+      <svg xmlns="http://www.w3.org/2000/svg"
+           width="24"
+           height="24"
+           viewBox="0 0 24 24"
+           fill="none"
+           stroke="currentColor"
+           stroke-width="1.8"
+           stroke-linecap="round"
+           stroke-linejoin="round">
+        <path d="M12 3v12"/>
+        <path d="m7 10 5 5 5-5"/>
+        <path d="M4 17v3h16v-3"/>
+      </svg>
+
+    </a>
+
+  </div>
+
+</div>

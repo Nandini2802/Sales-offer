@@ -1,0 +1,416 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Poppins:wght@400;500;600&display=swap"
+    rel="stylesheet"
+>
+
+<style>
+    *,
+    *::before,
+    *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        font-family: 'Poppins', Arial, sans-serif;
+        background: #000;
+        color: #fff;
+        -webkit-font-smoothing: antialiased;
+    }
+
+    .pay-container {
+        width: 100%;
+        max-width: 600px;
+        margin: 0 auto;
+        background: #000;
+    }
+
+    .pay-header {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px 16px;
+        background: rgba(0, 0, 0, 0.9);
+        border-bottom: 1px solid #222;
+    }
+
+    .pay-header__title {
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 600;
+        font-size: 17px;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        text-align: center;
+    }
+
+    .pay-body {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        padding: 16px;
+    }
+
+    .pay-summary {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .pay-field {
+        display: flex;
+        align-items: center;
+        min-height: 56px;
+        padding: 12px 16px;
+        border-radius: 10px;
+        background: #111;
+    }
+
+    .pay-field__text {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .pay-field__label {
+        font-size: 12px;
+        line-height: 1.5;
+        opacity: 0.6;
+    }
+
+    .pay-field__value {
+        font-size: 13px;
+        font-weight: 500;
+        line-height: 1.5;
+        overflow-wrap: anywhere;
+    }
+
+    .pay-year {
+        background: #111;
+        border-radius: 14px;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .pay-year__title {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 17px;
+        font-weight: 600;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+    }
+
+    .pay-year__rule {
+        height: 1px;
+        background: #333;
+    }
+
+    .pay-table {
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+    }
+
+    .pay-row {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 8px;
+        line-height: 1.4;
+    }
+
+    .c-milestone {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .c-percent {
+        width: 68px;
+        flex-shrink: 0;
+        text-align: right;
+    }
+
+    .c-amount {
+        width: 130px;
+        flex-shrink: 0;
+        text-align: right;
+    }
+
+    .pay-row--head {
+        font-size: 12px;
+        opacity: 0.65;
+        font-weight: 500;
+    }
+
+    .m-date {
+        font-size: 13px;
+        font-weight: 500;
+    }
+
+    .m-note {
+        font-size: 11px;
+        opacity: 0.6;
+        overflow-wrap: anywhere;
+    }
+
+    .pay-row:not(.pay-row--head) .c-percent {
+        font-size: 13px;
+        opacity: 0.75;
+    }
+
+    .pay-row:not(.pay-row--head) .c-amount {
+        font-size: 13px;
+        font-weight: 600;
+        overflow-wrap: anywhere;
+    }
+
+    .pay-empty {
+        background: #111;
+        border-radius: 12px;
+        padding: 20px;
+        font-size: 13px;
+        opacity: 0.8;
+        text-align: center;
+    }
+
+    .pay-footer {
+        padding: 4px 0 16px;
+        font-size: 11px;
+        line-height: 1.6;
+        color: #999;
+        text-align: center;
+    }
+
+    @media (max-width: 420px) {
+        .pay-year {
+            padding: 14px;
+        }
+
+        .c-percent {
+            width: 50px;
+        }
+
+        .c-amount {
+            width: 105px;
+        }
+
+        .pay-row {
+            gap: 6px;
+        }
+
+        .pay-row:not(.pay-row--head) .c-amount {
+            font-size: 11px;
+        }
+
+        .pay-row--head {
+            font-size: 11px;
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<div class="pay-container">
+
+    <div class="pay-header">
+        <p class="pay-header__title">
+            Payment Plan
+        </p>
+    </div>
+
+    <div class="pay-body">
+
+        <div class="pay-summary">
+
+            <div class="pay-field">
+                <div class="pay-field__text">
+                    <div class="pay-field__label">
+                        Project Name
+                    </div>
+                    <div class="pay-field__value">
+                        {{ project_name }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="pay-field">
+                <div class="pay-field__text">
+                    <div class="pay-field__label">
+                        Unit
+                    </div>
+                    <div class="pay-field__value">
+                        {{ unit_name }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="pay-field">
+                <div class="pay-field__text">
+                    <div class="pay-field__label">
+                        Payment Plan
+                    </div>
+                    <div class="pay-field__value">
+                        {{ plan_name }}
+                    </div>
+                </div>
+            </div>
+
+            {% if classification %}
+            <div class="pay-field">
+                <div class="pay-field__text">
+                    <div class="pay-field__label">
+                        Classification
+                    </div>
+                    <div class="pay-field__value">
+                        {{ classification }}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            {% if plan_type %}
+            <div class="pay-field">
+                <div class="pay-field__text">
+                    <div class="pay-field__label">
+                        Plan Type
+                    </div>
+                    <div class="pay-field__value">
+                        {{ plan_type }}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            {% if pre_handover %}
+            <div class="pay-field">
+                <div class="pay-field__text">
+                    <div class="pay-field__label">
+                        Pre-Handover Payment
+                    </div>
+                    <div class="pay-field__value">
+                        {{ pre_handover }}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            {% if post_handover %}
+            <div class="pay-field">
+                <div class="pay-field__text">
+                    <div class="pay-field__label">
+                        Post-Handover Payment
+                    </div>
+                    <div class="pay-field__value">
+                        {{ post_handover }}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            <div class="pay-field">
+                <div class="pay-field__text">
+                    <div class="pay-field__label">
+                        Installments in Schedule
+                    </div>
+                    <div class="pay-field__value">
+                        {{ installment_count }}
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        {% if installments_by_year %}
+
+            {% for year, installments in installments_by_year.items() %}
+
+            <div class="pay-year">
+
+                <div class="pay-year__title">
+                    {{ year }}
+                </div>
+
+                <div class="pay-year__rule"></div>
+
+                <div class="pay-table">
+
+                    <div class="pay-row pay-row--head">
+                        <div class="c-milestone">
+                            Milestone
+                        </div>
+                        <div class="c-percent">
+                            Percent
+                        </div>
+                        <div class="c-amount">
+                            Amount
+                        </div>
+                    </div>
+
+                    {% for installment in installments %}
+
+                    <div class="pay-row">
+
+                        <div class="c-milestone">
+
+                            <span class="m-date">
+                                {{ installment.display_date }}
+                            </span>
+
+                            <span class="m-note">
+                                {{ installment.description }}
+                            </span>
+
+                        </div>
+
+                        <div class="c-percent">
+                            {{ installment.display_percentage }}
+                        </div>
+
+                        <div class="c-amount">
+                            {{ installment.display_amount }}
+                        </div>
+
+                    </div>
+
+                    {% endfor %}
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <div class="pay-empty">
+                No installment schedule is available
+                for the selected payment plan.
+            </div>
+
+        {% endif %}
+
+        <div class="pay-footer">
+            Payment plan information is based on
+            the data returned by Danube Properties.
+            Dates and amounts are subject to
+            official confirmation.
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

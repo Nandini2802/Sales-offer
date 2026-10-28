@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #fff; }
+  .card {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.06), 0 8px 32px rgba(0,0,0,.06);
+    width: 100%;
+    max-width: 480px;
+    overflow: hidden;
+  }
+  .hero {
+    position: relative;
+    min-height: 160px;
+    background: linear-gradient(135deg, #16213e 0%, #1a2f5e 100%);
+    overflow: hidden;
+  }
+  .hero img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    display: block;
+    opacity: .75;
+  }
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(22,33,62,.2) 0%, rgba(22,33,62,.85) 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 24px 28px;
+  }
+  .hero-no-image {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 24px 28px;
+  }
+  .label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #c9a96e;
+    margin-bottom: 6px;
+  }
+  .title { font-size: 24px; font-weight: 800; color: #fff; line-height: 1.15; }
+  .location-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 8px;
+    background: rgba(255,255,255,.15);
+    color: rgba(255,255,255,.85);
+    font-size: 12px;
+    font-weight: 500;
+    padding: 4px 12px;
+    border-radius: 20px;
+    backdrop-filter: blur(4px);
+  }
+  .card-body { padding: 24px 28px; }
+  .description {
+    font-size: 14px;
+    line-height: 1.65;
+    color: #4a4a4a;
+    margin-bottom: 20px;
+  }
+  .section-title {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: #9a9590;
+    margin-bottom: 10px;
+  }
+  .asset-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+  .chip {
+    font-size: 12px;
+    font-weight: 500;
+    color: #16213e;
+    background: #f0ede8;
+    padding: 5px 12px;
+    border-radius: 20px;
+    border: 1px solid #e4e0da;
+  }
+  .lang-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .lang-pill {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .8px;
+    color: #fff;
+    background: #16213e;
+    padding: 4px 10px;
+    border-radius: 6px;
+  }
+  .footer {
+    padding: 12px 28px;
+    background: #faf9f7;
+    border-top: 1px solid #f0ede8;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .footer-dot { width: 6px; height: 6px; border-radius: 50%; background: #c9a96e; }
+  .footer-text { font-size: 11px; color: #9a9590; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="hero">
+    {% if thumbnail_url %}
+    <img src="{{ thumbnail_url }}" alt="{{ project }}" loading="lazy" />
+    <div class="hero-overlay">
+    {% else %}
+    <div class="hero-no-image">
+    {% endif %}
+      <div class="label">Project Overview</div>
+      <div class="title">{{ project }}</div>
+      {% if location %}
+      <span class="location-badge">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        {{ location }}
+      </span>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="card-body">
+    {% if description %}
+    <p class="description">{{ description }}</p>
+    {% endif %}
+
+    {% if available_asset_types %}
+    <div class="section-title">Available Materials</div>
+    <div class="asset-chips">
+      {% for at in available_asset_types %}
+      <span class="chip">{{ at | replace('_', ' ') | title }}</span>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if available_languages %}
+    <div class="section-title">Languages</div>
+    <div class="lang-pills">
+      {% for lang in available_languages %}
+      <span class="lang-pill">{{ lang | upper }}</span>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+
+  <div class="footer">
+    <div class="footer-dot"></div>
+    <span class="footer-text">Danube Properties &mdash; Official Project Profile</span>
+  </div>
+</div>
+
+</body>
+</html>
